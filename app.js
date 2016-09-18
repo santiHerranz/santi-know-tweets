@@ -27,6 +27,16 @@ angular.module('app')
 			controller: 'FriendsController as vm'
 		});
 
+		$stateProvider.state('friends.detail', {
+			url: '^/profile/{username}',
+			views: {
+				'@': {
+				templateUrl: 'profile/index.html',
+				controller: 'ProfileController as vm'
+				}
+			}			
+		});
+
 		$stateProvider.state('profile', {
 			url: '/profile',
 			templateUrl: 'profile/index.html',
@@ -38,25 +48,6 @@ angular.module('app')
 
 .controller('AppController', function($scope, $state, $rootScope, $mdDialog){
 	var vm = this;
-	vm.selectedIndex = 0;
-	
-	$scope.$watch('vm.selectedIndex', function(newVal, oldVal){
-		switch(newVal){
-			case 0:
-				$state.go('timeline');
-				break;
-			case 1:
-				$state.go('friends');
-				break;
-			case 2:
-				$state.go('profile');
-				break;
-			default: 
-				$state.go('timeline');
-				break;
-		}
-	});
-
     
     vm.newTweet = function($event){
         var parent = angular.element(document.body);
@@ -75,8 +66,11 @@ angular.module('app')
     
 })
 .controller('TweetController', function(TimelineService){
-	var vm = this;	
-	vm.username = 'Admin';
+	var vm = this;
+
+    vm.friends = TimelineService.friends();
+
+	vm.username = '';
     vm.text = '';
 	
 	vm.send = function(){

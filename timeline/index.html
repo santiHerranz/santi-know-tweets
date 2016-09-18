@@ -1,7 +1,8 @@
  <md-list>
 		<md-list-item class="md-long-text" ng-repeat="tweet in vm.tweets">
 			<md-list-item-text>
-                <p><strong>@{{tweet.author}}</strong> {{tweet.title}}</p>
+                <a ui-sref="friends.detail({username: tweet.author})">@{{tweet.author}}</a>
+                <p>{{tweet.title}}</p>
 				<md-button class="md-raised md-secondary md-warn" ng-click="confirmDelete(menu.id)">x</md-button>
 			</md-list-item-text>			
 		</md-list-item>

@@ -9,6 +9,14 @@
 	</md-list>
 	</md-toolbar>
 	<form name="tweetForm" layout="column">
+
+<md-input-container>
+  <label>Per</label>
+<md-select ng-model="vm.username" required>
+    <md-option ng-value="friend.username" ng-repeat="friend in vm.friends">{{ friend.username }}</md-option>
+  </md-select>
+  </md-input-container>
+
 		<md-input-container>
 			<label>Text</label>
 			<textarea name="tweet" 

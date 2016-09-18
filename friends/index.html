@@ -1,7 +1,8 @@
  <md-list>
 		<md-list-item class="md-long-text" ng-repeat="friend in vm.friends | orderBy:-username">
 			<md-list-item-text >
-                <p><strong>@{{friend.username}}</strong> {{friend.bio}}</p>
+                <a ui-sref="friends.detail({username: friend.username})">@{{friend.username}}</a>
+                <p>{{friend.bio}}</p>
 			</md-list-item-text>
 <md-button class="md-secondary md-fab md-mini md-primary" ng-click="">
 </md-button>            			
