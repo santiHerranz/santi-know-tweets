@@ -25,25 +25,52 @@
 <!-- AngularFire -->
 <script src="https://cdn.firebase.com/libs/angularfire/1.2.0/angularfire.min.js"></script>
 
+<!-- UI Router -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.js"></script>
+
 <!-- App Libraries -->
 <script src="app.js"></script>
+<script src="timeline/controller.js"></script>
+<script src="friends/controller.js"></script>
+<script src="profile/controller.js"></script>
+<script src="services.js"></script>
 
     </head>
     <body ng-app="app" ng-cloak>
     <md-content role="main" ng-controller="AppController as vm" layout="column" layout-fill>
-        <md-list>
-		<md-list-item class="md-long-text" ng-repeat="tweet in vm.tweets">
-			<md-list-item-text>
-                <p><strong>@{{tweet.author}}</strong> {{tweet.title}}</p>
-			</md-list-item-text>			
-		</md-list-item>
-	</md-list>
-        
+		<md-toolbar md-scroll-shrink layout-padding>
+				Know Tweets
+			</md-toolbar>
+
 <md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="vm.newTweet($event)">
 				<md-icon>create</md-icon>
       		</md-button>        
-        
-        
+		
+<md-tabs 
+					 md-dynamic-height
+					 md-border-bottom 
+					 md-stretch-tabs 
+					 md-selected="vm.selectedIndex">			
+				<md-tab >					 
+					<md-tab-label>
+						<i class="material-icons md-36">home</i>
+					</md-tab-label>			
+				</md-tab>
+				<md-tab >					 
+					<md-tab-label>
+						<i class="material-icons md-36">people</i>
+					</md-tab-label>					
+				</md-tab>
+				<md-tab >					 
+					<md-tab-label>
+						<i class="material-icons md-36">face</i>
+					</md-tab-label>					
+				</md-tab>
+			</md-tabs>
+
+<ui-view layout="column" flex>
+</ui-view>
+
     </md-content>
 
 

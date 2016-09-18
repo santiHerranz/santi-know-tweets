@@ -1,9 +1,62 @@
-angular.module('app', ['ngMaterial','firebase']);
+
+
+angular.module('app', [ 'ngMaterial', 
+						'ui.router',
+						'firebase', 
+						'app.timeline', 
+						'app.friends', 
+						'app.profile',
+						'app.services'
+						]);
 
 angular.module('app')
-.controller('AppController', function($rootScope, $mdDialog, TimelineService){
+
+.config(function($stateProvider, $urlRouterProvider){
+	
+		$urlRouterProvider.otherwise('/timeline');
+
+		$stateProvider.state('timeline', {
+			url: '/timeline',
+			templateUrl: 'timeline/index.html',
+			controller: 'TimelineController as vm'
+		});
+
+		$stateProvider.state('friends', {
+			url: '/friends',
+			templateUrl: 'friends/index.html',
+			controller: 'FriendsController as vm'
+		});
+
+		$stateProvider.state('profile', {
+			url: '/profile',
+			templateUrl: 'profile/index.html',
+			controller: 'ProfileController as vm'
+		});
+
+
+})
+
+.controller('AppController', function($scope, $state, $rootScope, $mdDialog){
 	var vm = this;
-    vm.tweets = TimelineService.all();
+	vm.selectedIndex = 0;
+	
+	$scope.$watch('vm.selectedIndex', function(newVal, oldVal){
+		switch(newVal){
+			case 0:
+				$state.go('timeline');
+				break;
+			case 1:
+				$state.go('friends');
+				break;
+			case 2:
+				$state.go('profile');
+				break;
+			default: 
+				$state.go('timeline');
+				break;
+		}
+	});
+
     
     vm.newTweet = function($event){
         var parent = angular.element(document.body);
@@ -30,29 +83,4 @@ angular.module('app')
 		TimelineService.send(vm.username, vm.text);
 	}
 })
-.factory('TimelineService', function($firebaseArray, $rootScope){
-
-    var tweetsRef = new Firebase("https://knowtweets.firebaseio.com" + '/tweets');
-    
-	var result = {
-		all: all,
-        send: send
-	};
-	function all(){
-
-		return $firebaseArray(tweetsRef);
-	};
-
-    
-    function send(username, text){
-		var tweet = {
-			author: username,
-			title: text
-		};
-        $firebaseArray(tweetsRef).$add(tweet).then(function(ref){
-			$rootScope.$broadcast('timeline:tweetSent', null);
-		})
-	}
-	
-	return result;
-}); 
+; 

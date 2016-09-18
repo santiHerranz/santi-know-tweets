@@ -1,0 +1,9 @@
+ <md-list>
+		<md-list-item class="md-long-text" ng-repeat="friend in vm.friends | orderBy:-username">
+			<md-list-item-text >
+                <p><strong>@{{friend.username}}</strong> {{friend.bio}}</p>
+			</md-list-item-text>
+<md-button class="md-secondary md-fab md-mini md-primary" ng-click="">
+</md-button>            			
+		</md-list-item>
+	</md-list>
