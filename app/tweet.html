@@ -1,0 +1,25 @@
+<md-content layout-padding layout="column">
+	<md-toolbar>		
+		<md-list>
+			<md-list-item class="md-long-text">
+				<md-list-item-text>
+					<p>{{vm.username}}</p>
+				</md-list-item-text>
+			</md-list-item>
+	</md-list>
+	</md-toolbar>
+	<form name="tweetForm" layout="column">
+		<md-input-container>
+			<label>Text</label>
+			<textarea name="tweet" 
+					  ng-model="vm.text"
+					  required 
+					  max-length="140"
+					  md-maxlength="140" 
+					  md-autofocus></textarea>			
+		</md-input-container>
+		<md-button class="md-primary" 
+				   ng-disabled="!tweetForm.$valid"
+				   ng-click="vm.send()">Send</md-button>
+	</form>
+</md-content>

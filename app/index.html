@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    	<title>KnowTweets</title>
+		<meta charset="utf-8" />
+
+<!-- Angular Material style sheet -->
+<link rel="stylesheet" href="https://cdn.rawgit.com/angular/bower-material/master/angular-material.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">        
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+rel="stylesheet">
+        
+<!-- Angular Material Dependencies -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-messages.min.js"></script> 
+
+<script src="https://cdn.rawgit.com/angular/bower-material/master/angular-material.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js"></script>   
+        
+<!-- Firebase -->
+<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+
+<!-- AngularFire -->
+<script src="https://cdn.firebase.com/libs/angularfire/1.2.0/angularfire.min.js"></script>
+
+        
+<script>
+angular.module('app', ['ngMaterial','firebase']);
+
+angular.module('app')
+.controller('AppController', function($rootScope, $mdDialog, TimelineService){
+	var vm = this;
+    vm.tweets = TimelineService.all();
+    
+    vm.newTweet = function($event){
+        var parent = angular.element(document.body);
+		$mdDialog.show({
+			parent: parent,
+			targetEvent: $event,
+			clickOutsideToClose: true,
+			templateUrl: './tweet.html',
+			controller: 'TweetController as vm'
+		});
+	}	        
+    
+    $rootScope.$on('timeline:tweetSent', function(event, data){
+        $mdDialog.hide();
+	})
+    
+})
+.controller('TweetController', function(TimelineService){
+	var vm = this;	
+	vm.username = 'Admin';
+    vm.text = '';
+	
+	vm.send = function(){
+		TimelineService.send(vm.username, vm.text);
+	}
+})
+.factory('TimelineService', function($firebaseArray, $rootScope){
+
+    var tweetsRef = new Firebase("https://knowtweets.firebaseio.com" + '/tweets');
+    
+	var result = {
+		all: all,
+        send: send
+	};
+	function all(){
+
+		return $firebaseArray(tweetsRef);
+	};
+
+    
+    function send(username, text){
+		var tweet = {
+			author: username,
+			title: text
+		};
+        $firebaseArray(tweetsRef).$add(tweet).then(function(ref){
+			$rootScope.$broadcast('timeline:tweetSent', null);
+		})
+	}
+	
+	return result;
+}); 
+    
+        </script>
+        
+    </head>
+    <body ng-app="app" ng-cloak>
+    <md-content role="main" ng-controller="AppController as vm" layout="column" layout-fill>
+        <md-list>
+		<md-list-item class="md-long-text" ng-repeat="tweet in vm.tweets">
+			<md-list-item-text>
+                <p><strong>@{{tweet.author}}</strong> {{tweet.title}}</p>
+			</md-list-item-text>			
+		</md-list-item>
+	</md-list>
+        
+<md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="vm.newTweet($event)">
+				<md-icon>create</md-icon>
+      		</md-button>        
+        
+        
+    </md-content>
+    </body>
+</html>
