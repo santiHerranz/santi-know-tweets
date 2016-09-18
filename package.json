@@ -1,0 +1,26 @@
+{
+  "name": "santi-know-tweets",
+  "version": "1.0.0",
+  "description": "\"# santi-know-tweets\"",
+  "main": "index.js",
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-animate": "^1.5.8",
+    "angular-material": "^1.1.1",
+    "angular-aria": "^1.5.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santiHerranz/santi-know-tweets.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/santiHerranz/santi-know-tweets/issues"
+  },
+  "homepage": "https://github.com/santiHerranz/santi-know-tweets#readme"
+}
